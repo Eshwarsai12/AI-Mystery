@@ -5,6 +5,7 @@ import App from './App.jsx';
 import './styles.css';
 import './showcase.css';
 import './retry.css';
+import './theme.css';
 
 const Router = import.meta.env.PROD ? HashRouter : BrowserRouter;
 
