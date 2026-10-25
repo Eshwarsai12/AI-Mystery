@@ -31,6 +31,12 @@ Fixture mode requires only a JWT secret. For a quick local secret, use a random 
 
 The repository includes a [`render.yaml`](./render.yaml) Blueprint for one web service that serves the built React app and the API at the same origin. Push the repository to GitHub, create a Render Blueprint deployment from it, then supply `MONGODB_URI` and `GEMINI_API_KEY` when Render prompts for the unsynced secrets. Render generates `JWT_SECRET`. The Blueprint sets `DEV_FIXTURES=false`; use a MongoDB Atlas connection string whose network access permits the Render service. The deployment is not ready until Render reports `/health` as healthy and both provider secrets are configured.
 
+## Deploy the frontend to GitHub Pages
+
+The [`pages.yml`](./.github/workflows/pages.yml) workflow builds only the `client` workspace and publishes only `client/dist` using the official GitHub Pages actions. Vite uses `/AI-Mystery/` for production project-site assets; the React app uses hash-based routing so refreshing a nested frontend route works on Pages. In repository **Settings → Pages**, set the source to **GitHub Actions**. A push to `main` or a manual workflow run publishes the site. The workflow does not deploy the Express server or any environment file.
+
+The Pages frontend needs a separately hosted HTTPS API for account and investigation features. To connect one, add the repository Actions variable `VITE_API_URL` with the public API base URL (including `/api/v1`). This value is public client configuration; never put API keys, database URIs, or JWT secrets in it. Until configured, the frontend explains that its backend is disconnected instead of sending API requests to GitHub Pages.
+
 ## Implemented features
 
 - Responsive landing, mystery intake, archive, suspect directory, exhibit viewer, timeline, field notes, final accusation, and solution reveal.

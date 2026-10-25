@@ -1,6 +1,7 @@
-const API = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '/api/v1' : 'http://localhost:5000/api/v1');
+const API = import.meta.env.VITE_API_URL?.trim() || (import.meta.env.DEV ? 'http://localhost:5000/api/v1' : '');
 
 export async function request(path, options = {}) {
+  if (!API) throw new Error('The frontend is published, but no backend API is connected. Set the GitHub Actions variable VITE_API_URL to your deployed API URL.');
   let response;
   try {
     response = await fetch(`${API}${path}`, {
